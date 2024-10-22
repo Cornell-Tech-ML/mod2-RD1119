@@ -436,6 +436,21 @@ def tensor(
 def grad_central_difference(
     f: Any, *vals: Tensor, arg: int = 0, epsilon: float = 1e-6, ind: UserIndex
 ) -> float:
+    """Compute the gradient using central difference approximation.
+
+    Args:
+    ----
+        f: The function for which the gradient is computed.
+        vals: The input tensors.
+        arg: The index of the argument to compute the gradient with respect to.
+        epsilon: The small perturbation value.
+        ind: The index at which to compute the gradient.
+
+    Returns:
+    -------
+        The computed gradient at the specified index.
+
+    """
     x = vals[arg]
     up = zeros(x.shape)
     up[ind] = epsilon

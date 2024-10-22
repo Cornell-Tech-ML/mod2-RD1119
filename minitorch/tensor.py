@@ -95,9 +95,23 @@ class Tensor:
         self.f = backend
 
     def requires_grad_(self, x: bool) -> None:
+        """Sets whether the tensor requires gradient computation.
+
+        Args:
+        ----
+            x: A boolean indicating if the tensor requires gradient computation.
+
+        """
         self.history = History()
 
     def requires_grad(self) -> bool:
+        """Check if the tensor requires gradient computation.
+
+        Returns
+        -------
+            A boolean indicating if the tensor requires gradient computation.
+
+        """
         return self.history is not None
 
     def to_numpy(self) -> npt.NDArray[np.float64]:
@@ -194,6 +208,18 @@ class Tensor:
         # END CODE CHANGE (2021)
 
     def zeros(self, shape: Optional[UserShape] = None) -> Tensor:
+        """Create a tensor filled with zeros.
+
+        Args:
+        ----
+            shape: The shape of the tensor. If None, uses the shape of the current tensor.
+
+        Returns:
+        -------
+            A tensor filled with zeros.
+
+        """
+
         def zero(shape: UserShape) -> Tensor:
             return Tensor.make(
                 [0.0] * int(operators.prod(shape)), shape, backend=self.backend
