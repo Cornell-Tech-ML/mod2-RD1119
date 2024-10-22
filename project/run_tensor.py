@@ -21,9 +21,10 @@ class Linear(minitorch.Module):
         self.out_size = out_size
 
     def forward(self, x):
-        batch, feature = x.shape
-        wx = (self.weights.value * x.view(batch, feature, 1)).sum(1)
-        return wx.view(batch, self.out_size) + self.bias.value.view(self.out_size)
+        batch_size, num_feature = x.shape
+        wx = (self.weights.value * x.view(batch_size, num_feature, 1)).sum(1)
+        output = wx.view(batch_size, self.out_size) + self.bias.value.view(self.out_size)
+        return output
 
 class Network(minitorch.Module):
     def __init__(self, hidden_layers):

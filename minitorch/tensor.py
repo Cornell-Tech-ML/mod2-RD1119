@@ -333,11 +333,7 @@ class Tensor:
     # TODO: Implement for Task 2.3.
     @property
     def size(self) -> int:
-        """Returns:
-
-        int : size of the tensor
-
-        """
+        """Returns the size of the tensor"""
         return self._tensor.size
 
     @property
@@ -425,8 +421,7 @@ class Tensor:
         """
         if dim is None:
             return Sum.apply(self.contiguous().view(self.size), self._ensure_tensor(0))
-        else:
-            return Sum.apply(self, self._ensure_tensor(dim))
+        return Sum.apply(self, self._ensure_tensor(dim))
 
     def mean(self, dim: Optional[int] = None) -> Tensor:
         """Calculate the mean of the tensor along a specified dimension.
@@ -442,8 +437,7 @@ class Tensor:
         """
         if dim is not None:
             return self.sum(dim) / self.shape[dim]
-        else:
-            return self.sum() / self.size
+        return self.sum() / self.size
 
     def permute(self, *order: int) -> Tensor:
         """Permute the dimensions of the tensor according to the specified order."""

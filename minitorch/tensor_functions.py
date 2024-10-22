@@ -255,15 +255,15 @@ class Permute(Function):
     @staticmethod
     def forward(ctx: Context, a: Tensor, order: Tensor) -> Tensor:
         """Forward function for Permute"""
-        ori_order: List[int] = [int(i) for i in order._tensor._storage]
-        ctx.save_for_backward(a, ori_order)
-        return minitorch.Tensor(a._tensor.permute(*ori_order), backend=a.backend)
+        tensor_order = list(order._tensor._storage)
+        ctx.save_for_backward(a, tensor_order)
+        return minitorch.Tensor(a._tensor.permute(*tensor_order), backend=a.backend)
 
     @staticmethod
     def backward(ctx: Context, grad_output: Tensor) -> Tuple[Tensor, float]:
         """Backward function for Permute"""
-        (a, ori_order) = ctx.saved_tensors
-        order: List[int] = [ori_order.index(i) for i in range(len(ori_order))]
+        (a, tensor_order) = ctx.saved_tensors
+        order = [tensor_order.index(i) for i in range(len(tensor_order))]
         grad_output = minitorch.Tensor(
             grad_output._tensor.permute(*order), backend=a.backend
         )

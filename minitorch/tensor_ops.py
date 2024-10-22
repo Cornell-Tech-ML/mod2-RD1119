@@ -276,12 +276,12 @@ def tensor_map(
         # TODO: Implement for Task 2.3.
         in_index: Index = np.array(in_shape)
         out_index: Index = np.array(out_shape)
-        for i in range(len(out)):
-            to_index(i, out_shape, out_index)
+        for ordinal in range(len(out)):
+            to_index(ordinal, out_shape, out_index)
             broadcast_index(out_index, out_shape, in_shape, in_index)
-            data: np.float64 = in_storage[index_to_position(in_index, in_strides)]
-            mapped_data: float = fn(float(data))
-            out[index_to_position(out_index, out_strides)] = mapped_data
+            position = index_to_position(in_index, in_strides)
+            data = in_storage[position]
+            out[index_to_position(out_index, out_strides)] = fn(float(data))
 
     return _map
 
@@ -331,14 +331,15 @@ def tensor_zip(
         out_index: Index = np.array(out_shape)
         a_index: Index = np.array(a_shape)
         b_index: Index = np.array(b_shape)
-        for i in range(len(out)):
-            to_index(i, out_shape, out_index)
+        for ordinal in range(len(out)):
+            to_index(ordinal, out_shape, out_index)
             broadcast_index(out_index, out_shape, a_shape, a_index)
             broadcast_index(out_index, out_shape, b_shape, b_index)
-            a_data: np.float64 = a_storage[index_to_position(a_index, a_strides)]
-            b_data: np.float64 = b_storage[index_to_position(b_index, b_strides)]
-            zipped_data: float = fn(float(a_data), float(b_data))
-            out[index_to_position(out_index, out_strides)] = zipped_data
+            a_data = a_storage[index_to_position(a_index, a_strides)]
+            b_data = b_storage[index_to_position(b_index, b_strides)]
+            out[index_to_position(out_index, out_strides)] = fn(
+                float(a_data), float(b_data)
+            )
 
     return _zip
 
@@ -372,8 +373,8 @@ def tensor_reduce(
     ) -> None:
         # TODO: Implement for Task 2.3.
         out_index: Index = np.array(out_shape)
-        for i in range(len(out)):
-            to_index(i, out_shape, out_index)
+        for ordinal in range(len(out)):
+            to_index(ordinal, out_shape, out_index)
             o_index: int = index_to_position(out_index, out_strides)
             for j in range(a_shape[reduce_dim]):
                 a_index: Index = out_index.copy()
