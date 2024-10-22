@@ -255,7 +255,7 @@ class Permute(Function):
     @staticmethod
     def forward(ctx: Context, a: Tensor, order: Tensor) -> Tensor:
         """Forward function for Permute"""
-        tensor_order = list(order._tensor._storage)
+        tensor_order = [int(i) for i in order._tensor._storage]
         ctx.save_for_backward(a, tensor_order)
         return minitorch.Tensor(a._tensor.permute(*tensor_order), backend=a.backend)
 
